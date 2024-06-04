@@ -1,0 +1,42 @@
+﻿version: '3.8'
+
+services:
+  postgress.user:
+    image: postgres:latest
+    container_name: postgress.user
+    environment:
+      POSTGRES_USER: mduarte
+      POSTGRES_PASSWORD: Qwerty12345@
+      POSTGRES_DB: user
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./custom_pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+    networks:
+      - pg_network
+        
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pgadmin@example.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "5050:80"
+    networks:
+      - pg_network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - pg_network
+
+networks:
+  pg_network:
+
+volumes:
+  postgres_data:
