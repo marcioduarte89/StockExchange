@@ -8,10 +8,27 @@ services:
       POSTGRES_USER: mduarte
       POSTGRES_PASSWORD: Qwerty12345@
       POSTGRES_DB: user
+      PGDATA: /var/lib/postgresql/data/some_name/
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./custom_pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+    networks:
+      - pg_network
+      
+  postgress.identity:
+    image: postgres:latest
+    container_name: postgress.identity
+    environment:
+      POSTGRES_USER: mduarte
+      POSTGRES_PASSWORD: Qwerty12345@
+      POSTGRES_DB: identity
+      PGDATA: /var/lib/postgresql/data/some_name/
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data_identity:/var/lib/postgresql/data
       - ./custom_pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     networks:
       - pg_network
@@ -40,3 +57,4 @@ networks:
 
 volumes:
   postgres_data:
+  postgres_data_identity:
