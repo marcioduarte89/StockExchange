@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
+using Duende.IdentityServer.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityServer.Configuration;
@@ -8,6 +9,7 @@ public class Initialize
 {
     public static void InitializeDatabase(WebApplication app)
     {
+        var tt = "secret".Sha256();
         using var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope();
         serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 

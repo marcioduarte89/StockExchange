@@ -31,16 +31,17 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Code,
                     
                 // where to redirect to after login
-                RedirectUris = { "https://localhost:5002/signin-oidc" },
+                RedirectUris = { "https://localhost:44333/signin-oidc" },
 
                 // where to redirect to after logout
-                PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
-
+                PostLogoutRedirectUris = { "https://localhost:44333/signout-callback-oidc" },
+                AllowOfflineAccess = true,
                 AllowedScopes = new List<string>
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    "user"
+                    "user",
+                    "offline_access"
                 }
             }
         };

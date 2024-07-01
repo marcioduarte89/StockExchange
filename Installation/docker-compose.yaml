@@ -32,6 +32,34 @@ services:
       - ./custom_pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     networks:
       - pg_network
+  
+  postgress.order:
+    image: postgres:latest
+    container_name: postgress.order
+    environment:
+      POSTGRES_USER: mduarte
+      POSTGRES_PASSWORD: Qwerty12345@
+      POSTGRES_DB: order
+      PGDATA: /var/lib/postgresql/data/some_name/
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data_order:/var/lib/postgresql/data
+      - ./custom_pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+    networks:
+      - pg_network
+      
+  userapi:
+    build:
+      context: ../
+      dockerfile: User.API/Dockerfile
+    image: userapi
+    ports:
+      - "5000:80"
+    networks:
+      - pg_network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
         
   pgadmin:
     image: dpage/pgadmin4
@@ -51,6 +79,37 @@ services:
       - 8080:8080
     networks:
       - pg_network
+        
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - 9090:9090
+    networks:
+      - pg_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    networks:
+      - pg_network
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=Qwerty12345@
+    volumes:
+      - ./provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 
 networks:
   pg_network:
@@ -58,3 +117,6 @@ networks:
 volumes:
   postgres_data:
   postgres_data_identity:
+  postgres_data_order:
+  prometheus_data:
+  grafana_data:

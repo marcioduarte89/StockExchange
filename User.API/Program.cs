@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using User.Infrastructure.EF;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("User")));
+
+// Add relevant services for OTel to function
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService(serviceName: "User API"))
+    .WithMetrics(metrics =>
+            metrics
+                .AddAspNetCoreInstrumentation() // ASP.NET Core related
+                .AddRuntimeInstrumentation() // .NET Runtime metrics like - GC, Memory Pressure, Heap Leaks etc
+                .AddHttpClientInstrumentation()
+                .AddPrometheusExporter() // Prometheus Exporter
+    );
 
 var app = builder.Build();
 
@@ -28,7 +41,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", async (UserDbContext context) =>
     {
-        await context.Database.EnsureCreatedAsync();
+        //await context.Database.EnsureCreatedAsync();
         
         var forecast = Enumerable.Range(1, 5).Select(index =>
                 new WeatherForecast
@@ -42,6 +55,8 @@ app.MapGet("/weatherforecast", async (UserDbContext context) =>
     })
     .WithName("GetWeatherForecast")
     .WithOpenApi();
+
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 app.Run();
 

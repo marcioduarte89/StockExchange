@@ -11,6 +11,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installation", "Installation", "{76148B00-2878-4695-BF30-4E9F38AC3CC7}"
 	ProjectSection(SolutionItems) = preProject
 		Installation\docker-compose.yaml = Installation\docker-compose.yaml
+		Installation\custom_pg_hba.conf = Installation\custom_pg_hba.conf
+		Installation\prometheus.yml = Installation\prometheus.yml
+		Installation\provisioning\datasources\prometheus.yaml = Installation\provisioning\datasources\prometheus.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.API", "User.API\User.API.csproj", "{3C526804-897B-45FC-988A-FD74905D120F}"
@@ -23,6 +26,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{27
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{3D67ED0A-9AF7-4FEF-A011-916D6FF779AE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{EA2537FF-EB70-495E-90D6-EAF9419D559F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockExchange.Web", "StockExchange.Web\StockExchange.Web.csproj", "{4A8F51A1-A2D5-4EE5-95C7-3366FA30122B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AssetManagement", "AssetManagement", "{70044795-F2F6-4736-A62E-68734E999D6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.API", "Order.API\Order.API.csproj", "{AAD5FC05-51B0-4660-92CD-44E55D5876A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Domain", "Order.Domain\Order.Domain.csproj", "{5BEADBEC-AD94-4EEB-A409-B02022420553}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Infrastructure", "Order.Infrastructure\Order.Infrastructure.csproj", "{A1C3963E-D044-4A2D-85D6-88ED433FF26E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +48,10 @@ Global
 		{791E5550-9AE0-446D-859B-B4A7B70C3F69} = {B07BDB7E-2BE1-4DF3-92A1-8C9ECCEABBE9}
 		{8AB4C307-5F5E-4A46-B857-E4A8484A5A5F} = {B07BDB7E-2BE1-4DF3-92A1-8C9ECCEABBE9}
 		{3D67ED0A-9AF7-4FEF-A011-916D6FF779AE} = {271C4BB0-EA3D-4638-BDAC-B3E11EA4C049}
+		{4A8F51A1-A2D5-4EE5-95C7-3366FA30122B} = {EA2537FF-EB70-495E-90D6-EAF9419D559F}
+		{AAD5FC05-51B0-4660-92CD-44E55D5876A2} = {1CA8B359-6F42-4187-80AA-039A5CA4DF0E}
+		{5BEADBEC-AD94-4EEB-A409-B02022420553} = {1CA8B359-6F42-4187-80AA-039A5CA4DF0E}
+		{A1C3963E-D044-4A2D-85D6-88ED433FF26E} = {1CA8B359-6F42-4187-80AA-039A5CA4DF0E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3C526804-897B-45FC-988A-FD74905D120F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -51,5 +70,21 @@ Global
 		{3D67ED0A-9AF7-4FEF-A011-916D6FF779AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D67ED0A-9AF7-4FEF-A011-916D6FF779AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D67ED0A-9AF7-4FEF-A011-916D6FF779AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A8F51A1-A2D5-4EE5-95C7-3366FA30122B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A8F51A1-A2D5-4EE5-95C7-3366FA30122B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A8F51A1-A2D5-4EE5-95C7-3366FA30122B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A8F51A1-A2D5-4EE5-95C7-3366FA30122B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAD5FC05-51B0-4660-92CD-44E55D5876A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAD5FC05-51B0-4660-92CD-44E55D5876A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAD5FC05-51B0-4660-92CD-44E55D5876A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAD5FC05-51B0-4660-92CD-44E55D5876A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BEADBEC-AD94-4EEB-A409-B02022420553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BEADBEC-AD94-4EEB-A409-B02022420553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BEADBEC-AD94-4EEB-A409-B02022420553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BEADBEC-AD94-4EEB-A409-B02022420553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1C3963E-D044-4A2D-85D6-88ED433FF26E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1C3963E-D044-4A2D-85D6-88ED433FF26E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1C3963E-D044-4A2D-85D6-88ED433FF26E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1C3963E-D044-4A2D-85D6-88ED433FF26E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
