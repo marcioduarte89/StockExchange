@@ -2,4 +2,4 @@
 
 namespace Order.API.Models.Output;
 
-public class OrderResponse(long CustomerId, long StockId, OrderType OrderType, OrderClass OrderClass, decimal UnitPrice, int NumberOfShares);
+public record OrderResponse(long OrderId, Guid OrderUId, long CustomerId, long StockId, OrderType OrderType, OrderClass OrderClass, decimal UnitPrice, int NumberOfShares);

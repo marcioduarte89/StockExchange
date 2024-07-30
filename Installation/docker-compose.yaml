@@ -109,8 +109,20 @@ services:
       - grafana_data:/var/lib/grafana
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
-
+      
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - pg_network
+        
 networks:
   pg_network:
 
@@ -120,3 +132,4 @@ volumes:
   postgres_data_order:
   prometheus_data:
   grafana_data:
+  rabbitmq_data:

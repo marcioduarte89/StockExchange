@@ -3,7 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Order.Infrastructure;
 
-public class OrderDbContext : DbContext
+public interface IOrderDbContext
+{
+    DbSet<Domain.Order> Orders { get; set; }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+}
+
+public class OrderDbContext : DbContext, IOrderDbContext
 {
     private readonly DbContextOptions<OrderDbContext> _contextOptions;
     

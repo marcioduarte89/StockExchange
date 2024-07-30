@@ -1,4 +1,6 @@
 using FastEndpoints;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Order.Infrastructure;
 
@@ -10,8 +12,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddFastEndpoints();
 
+builder.Services.AddHangfire((provider, config) =>
+    config.UsePostgreSqlStorage(c =>
+        c.UseNpgsqlConnection(provider.GetService<IConfiguration>()!.GetConnectionString("Order"))));
+
+builder.Services.AddHangfireServer(options =>
+{
+    options.ServerName = "OrderAPIBackgroundServer";
+});
+
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Order")));
+
+builder.Services.AddScoped<IOrderDbContext, OrderDbContext>();
 
 var app = builder.Build();
 
@@ -24,5 +37,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseFastEndpoints();
+app.UseHangfireDashboard();
+
+GlobalConfiguration.Configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UsePostgreSqlStorage(x => x.UseNpgsqlConnection(app.Configuration.GetConnectionString("Order")));
 
 app.Run();
